@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/8d4e98b5c9.js" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-database.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyDW8atDnZctKEuoR_0VgWCYex-sCLBVqD4",
+        authDomain: "webmobilehybridapp.firebaseapp.com",
+        databaseURL: "https://webmobilehybridapp.firebaseio.com",
+        projectId: "webmobilehybridapp",
+        storageBucket: "webmobilehybridapp.appspot.com",
+        messagingSenderId: "1065788689805",
+        appId: "1:1065788689805:web:beb352a7c7149321b801c4",
+        measurementId: "G-RS5D3BHHJ4",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css" />
+    <title>My Chat App</title>
+  </head>
+  <body>
+    
+    <div class="backDrop" id="backDrop">
+      <div class="userCradential">
+        <input type="text" placeholder="Enter your name." id="userName" />
+        <button onclick="getUserName()" class="addUser">Add</button>
+      </div>
+    </div>
+    
+    <div class="container" id="container">
+        <div class="messageBox">
+            <h2>Chat Box</h2>
+            <div class="messageContent" id="messageContent">
+                <ul id="sendMessages">
+                    <li>01</li>
+                    <li>02</li>
+                    <li>03</li>
+                    <li>04</li>
+                    <li>05</li>
+                    <li>06</li>
+                    <li>07</li>
+                    <li>08</li>
+                    <li>09</li>
+                    <li>10</li>
+                    <li>11</li>
+                    <li>12</li>
+                    <li>13</li>
+                    <li>14</li>
+                    <li>15</li>
+                    <li>16</li>
+                    <li>17</li>
+                    <li>18</li>
+                    <li>19</li>
+                    <li>20</li>
+                    <li>21</li>
+                    <li>22</li>
+                    <li>23</li>
+                    <li>24</li>
+                    <li>25</li>
+                    <li>26</li>
+                    <li>27</li>
+                    <li>28</li>
+                    <li>29</li>
+                    <li>30</li>
+                    <li>31</li>
+                    <li>32</li>
+                    <li>33</li>
+                    <li>34</li>
+                    <li>35</li>
+                    <li>36</li>
+                    <li>37</li>
+                    <li>38</li>
+                    <li>39</li>
+                    <li>40</li>
+                </ul>
+            </div>
+            <div class="textArea">
+                <input type="text" placeholder="Type message" id="messageText" />
+                <button onclick="messageSend()" id="btnSend"><i class="fas fa-angle-right"></i></button>
+            </div>
+        </div>
+    </div>
+  </body>
+  <script src="app.js"></script>
+</html>
