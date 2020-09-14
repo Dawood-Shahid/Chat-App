@@ -8,7 +8,6 @@ const getUserName = () => {
     const userName = document.getElementById('userName').value
     if (userName) {
         document.getElementById('backDrop').style.display = 'none'
-        // console.log(`getUserName -> ${userName}`)
         getFirebaseData()
         setScroll()
     }
@@ -18,24 +17,26 @@ const getUserName = () => {
 }
 
 const messageSend = () => {
-    // const userName = document.getElementById('userName').value
-    const userName = 'Azeem Shahid'
+    const userName = document.getElementById('userName').value
+    // const userName = 'Azeem Shahid'
     const typedMessage = document.getElementById('messageText').value
     let messageDetail = {
         user: userName,
         message: typedMessage
     }
-    firebase.database().ref('messages').push(messageDetail)
-    // console.log(`messageSend ${userName}`)
-    // console.log(`messageSend ${typedMessage}`)
-    getFirebaseData() //must nucommit
-    setScroll()
-    document.getElementById('messageText').value = null
+    if(typedMessage) {
+        firebase.database().ref('messages').push(messageDetail)
+        getFirebaseData() //must nucommit
+        setScroll()
+        document.getElementById('messageText').value = null
+    }
+    else {
+        alert("Type message first")
+    }
 }
 
 const getFirebaseData = () => {
     const messageList = document.getElementById('sendMessages')
-    const listTime = document.createElement('li')
     const fetchFirebaseData = [];
 
     let promise = new Promise((res, rej) => {
@@ -43,7 +44,6 @@ const getFirebaseData = () => {
             if (data.val()) {
 
                 res(data.val())
-                console.log(data.val())
                 fetchFirebaseData.push(data.val())
             }
             else {
@@ -54,27 +54,33 @@ const getFirebaseData = () => {
 
     promise
         .then(() => {
-            setTimeout(() => {
-                console.log(`----------------------`)
-                console.log(fetchFirebaseData)
-                console.log(`----------------------`)
-                
-                fetchFirebaseData.map((key) => {
-                // console.log(key)
-                    console.log(fetchFirebaseData[key] + " : " + fetchFirebaseData[key])
-                })
-                // console.log(fetchFirebaseData) //ok
-                console.log(`======================`)
-            }, 1500)
+            if ((fetchFirebaseData.length == 0 && messageList.childElementCount == 0) ||
+                (fetchFirebaseData.length != 0 && messageList.childElementCount == 0)) {
+                for (let i = 0; i < fetchFirebaseData.length; i++) {
+                    var text = `${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} `
+                    createdElement(text)
+                }
+            }
+            else if (fetchFirebaseData.length != messageList.childElementCount) {
+                for (let i = fetchFirebaseData.length - 1; i < fetchFirebaseData.length; i++) {
+                    var text = `${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} `
+                    createdElement(text)
+                }
+            }
+
         })
         .catch(error => {
-            alert(error)
+            console.log(error)
         })
-
-
-
-    // listTime.append(`${fetchFirebaseData['user']}: ${fetchFirebaseData['message']}`)
-    // messageList.appendChild(listTime)
-
-
+    setScroll()
 }
+
+const createdElement = (text) => {
+    const messageList = document.getElementById('sendMessages')
+    const listTime = document.createElement('li')
+    const listText = document.createTextNode(text)
+    listTime.appendChild(listText)
+    messageList.appendChild(listTime)
+}
+
+setScroll()
