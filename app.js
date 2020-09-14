@@ -81,6 +81,5 @@ const createdElement = (text) => {
     const listText = document.createTextNode(text)
     listTime.appendChild(listText)
     messageList.appendChild(listTime)
+    setScroll()
 }
-
-setScroll()
