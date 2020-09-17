@@ -93,14 +93,22 @@
 
 #sendMessages {
   list-style: none;
+  display: flex;
+  flex-direction: column;
 }
 
 #sendMessages li {
+  width: 300px;
   border: 1px solid;
+  /* align-self: flex-start; */
   border-radius: 8px;
   background-color: #e4e4e4;
   padding: 8px;
   margin: 8px;
+}
+
+.messageSender {
+  align-self: flex-end;
 }
 
 .messageContent {

@@ -24,7 +24,7 @@ const messageSend = () => {
         user: userName,
         message: typedMessage
     }
-    if(typedMessage) {
+    if (typedMessage) {
         firebase.database().ref('messages').push(messageDetail)
         getFirebaseData() //must nucommit
         setScroll()
@@ -40,34 +40,46 @@ const getFirebaseData = () => {
     const fetchFirebaseData = [];
 
     let promise = new Promise((res, rej) => {
-        firebase.database().ref('messages').on('child_added', (data) => {
+        firebase.database().ref('messages').on("child_added", (data) => {
+            // console.log(data.val())
             if (data.val()) {
-
+                // console.log(data.val())
                 res(data.val())
                 fetchFirebaseData.push(data.val())
             }
             else {
-                rej('Error')
+                rej()
             }
         })
     })
 
+    // console.log(fetchFirebaseData)
+
     promise
         .then(() => {
+            // console.log(fetchFirebaseData.length)
+            // console.log(messageList.childElementCount)
             if ((fetchFirebaseData.length == 0 && messageList.childElementCount == 0) ||
                 (fetchFirebaseData.length != 0 && messageList.childElementCount == 0)) {
                 for (let i = 0; i < fetchFirebaseData.length; i++) {
-                    var text = `${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} `
-                    createdElement(text)
+                    var textUserName = `${fetchFirebaseData[i].user}`
+                    var textUserMessage = `${fetchFirebaseData[i].message}`
+                    // console.log(`${i}- ${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} > if`)
+                    // console.log(`-----------------------------`)
+                    createdElement(textUserName, textUserMessage)
                 }
             }
             else if (fetchFirebaseData.length != messageList.childElementCount) {
-                for (let i = fetchFirebaseData.length - 1; i < fetchFirebaseData.length; i++) {
-                    var text = `${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} `
-                    createdElement(text)
+                for (let i = messageList.childElementCount; i < fetchFirebaseData.length; i++) {
+                    var textUserName = `${fetchFirebaseData[i].user}`
+                    var textUserMessage = `${fetchFirebaseData[i].message}`
+                    // console.log(`${i}- ${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} > else if`)
+                    // console.log(`-----------------------------`)
+                    createdElement(textUserName, textUserMessage)
                 }
             }
-
+            // console.log(fetchFirebaseData.length)
+            // console.log(messageList.childElementCount)
         })
         .catch(error => {
             console.log(error)
@@ -75,11 +87,20 @@ const getFirebaseData = () => {
     setScroll()
 }
 
-const createdElement = (text) => {
+const createdElement = (textUserName, textUserMessage) => {
+    const userName = document.getElementById('userName').value
+    // console.log(`${textUserName}: ${textUserMessage}`)
     const messageList = document.getElementById('sendMessages')
-    const listTime = document.createElement('li')
-    const listText = document.createTextNode(text)
-    listTime.appendChild(listText)
-    messageList.appendChild(listTime)
+    const listItme = document.createElement('li')
+    const userSpan = document.createElement('span')
+    const listText = document.createTextNode(`: ${textUserMessage}`)
+    if (userName === textUserName) {
+        // console.log(`${userName} matched`)
+        listItme.classList.add("messageSender")
+    }
+    userSpan.append(textUserName)
+    listItme.appendChild(userSpan)
+    listItme.append(listText)
+    messageList.appendChild(listItme)
     setScroll()
 }
