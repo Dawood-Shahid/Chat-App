@@ -155,10 +155,8 @@
     /* height: 100vh; */
   }
 
-  .messageContent {
-    /* border: 1px solid red; */
-    /* height: 300px; */
-    /* overflow: auto; */
+  #sendMessages li {
+    width: 250px;
   }
 
   #messageText {
