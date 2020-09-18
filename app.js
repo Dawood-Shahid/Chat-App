@@ -112,4 +112,6 @@ const createdElement = (textUserName, textUserMessage) => {
     setScroll()
 }
 
-setInterval(() => {getFirebaseData()}, 1000);
+if (userName) {
+    setInterval(() => {getFirebaseData()}, 1000);
+}
