@@ -8,8 +8,8 @@ const setScroll = () => {
 
 const getUserName = () => {
     userName = document.getElementById('userName').value
+    // localStorage.setItem('user')
     if (userName) {
-        // console.log(userName)
         document.getElementById('backDrop').style.display = 'none'
         getFirebaseData()
         setScroll()
@@ -20,57 +20,58 @@ const getUserName = () => {
 }
 
 const getFirebaseData = () => {
-const messageList = document.getElementById('sendMessages')
-const fetchFirebaseData = [];
+    const messageList = document.getElementById('sendMessages')
+    const fetchFirebaseData = [];
 
-let promise = new Promise((res, rej) => {
-    firebase.database().ref('messages').on("child_added", (data) => {
-        // console.log(data.val())
-        if (data.val()) {
+    let promise = new Promise((res, rej) => {
+        firebase.database().ref('messages').on("child_added", (data) => {
             // console.log(data.val())
-            res(data.val())
-            fetchFirebaseData.push(data.val())
-        }
-        else {
-            rej()
-        }
-        // console.log(fetchFirebaseData.length)
-        // console.log(messageList.childElementCount)
-    })
-})
-
-// console.log(fetchFirebaseData)
-
-promise
-    .then(() => {
-        // console.log(fetchFirebaseData.length)
-        // console.log(messageList.childElementCount)
-        if ((fetchFirebaseData.length == 0 && messageList.childElementCount == 0) ||
-            (fetchFirebaseData.length != 0 && messageList.childElementCount == 0)) {
-            for (let i = 0; i < fetchFirebaseData.length; i++) {
-                var textUserName = `${fetchFirebaseData[i].user}`
-                var textUserMessage = `${fetchFirebaseData[i].message}`
-                // console.log(`${i}- ${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} > if`)
-                // console.log(`-----------------------------`)
-                createdElement(textUserName, textUserMessage)
+            if (data.val()) {
+                // console.log(data.val())
+                res(data.val())
+                fetchFirebaseData.push(data.val())
             }
-        }
-        else if (fetchFirebaseData.length != messageList.childElementCount) {
-            for (let i = messageList.childElementCount; i < fetchFirebaseData.length; i++) {
-                var textUserName = `${fetchFirebaseData[i].user}`
-                var textUserMessage = `${fetchFirebaseData[i].message}`
-                // console.log(`${i}- ${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} > else if`)
-                // console.log(`-----------------------------`)
-                createdElement(textUserName, textUserMessage)
+            else {
+                rej()
             }
-        }
-        // console.log(fetchFirebaseData.length)
-        // console.log(messageList.childElementCount)
+            // console.log(fetchFirebaseData.length)
+            // console.log(messageList.childElementCount)
+        })
     })
-    .catch(error => {
-        console.log(error)
-    })
-setScroll()
+
+    // console.log(fetchFirebaseData)
+
+    promise
+        .then(() => {
+            // console.log(fetchFirebaseData.length)
+            // console.log(messageList.childElementCount)
+            if ((fetchFirebaseData.length == 0 && messageList.childElementCount == 0) ||
+                (fetchFirebaseData.length != 0 && messageList.childElementCount == 0)) {
+                for (let i = 0; i < fetchFirebaseData.length; i++) {
+                    var textUserName = `${fetchFirebaseData[i].user}`
+                    var textUserMessage = `${fetchFirebaseData[i].message}`
+                    // console.log(`${i}- ${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} > if`)
+                    // console.log(`-----------------------------`)
+                    createdElement(textUserName, textUserMessage)
+                    setScroll()
+                }
+            }
+            else if (fetchFirebaseData.length != messageList.childElementCount) {
+                for (let i = messageList.childElementCount; i < fetchFirebaseData.length; i++) {
+                    var textUserName = `${fetchFirebaseData[i].user}`
+                    var textUserMessage = `${fetchFirebaseData[i].message}`
+                    // console.log(`${i}- ${fetchFirebaseData[i].user}: ${fetchFirebaseData[i].message} > else if`)
+                    // console.log(`-----------------------------`)
+                    createdElement(textUserName, textUserMessage)
+                    setScroll()
+                }
+            }
+            // console.log(fetchFirebaseData.length)
+            // console.log(messageList.childElementCount)
+        })
+        .catch(error => {
+            console.log(error)
+        })
 }
 
 const messageSend = () => {
@@ -112,6 +113,11 @@ const createdElement = (textUserName, textUserMessage) => {
     setScroll()
 }
 
-if (userName) {
-    setInterval(() => {getFirebaseData()}, 1000);
-}
+setInterval(
+    () => {
+        const messageList = document.getElementById('sendMessages')
+        if (messageList.childElementCount != 0) {
+            getFirebaseData()
+        }
+    }, 1000
+)
